@@ -58,14 +58,16 @@ class IStanBackend(ABC):
         pass
 
 
+_model_dir_path = Path(os.environ.get("PROPHET_MODEL_DIR_PATH", default=Path.home().joinpath(".prophet")))
+
 class CmdStanPyBackend(IStanBackend):
     CMDSTAN_VERSION = "2.26.1"
     def __init__(self):
         super().__init__()
-        import cmdstanpy
-        cmdstanpy.set_cmdstan_path(
-            pkg_resources.resource_filename("prophet", f"stan_model/cmdstan-{self.CMDSTAN_VERSION}")
-        )
+        # import cmdstanpy
+        # cmdstanpy.set_cmdstan_path(
+        #     pkg_resources.resource_filename("prophet", f"stan_model/cmdstan-{self.CMDSTAN_VERSION}")
+        # )
 
     @staticmethod
     def get_type():
@@ -81,14 +83,18 @@ class CmdStanPyBackend(IStanBackend):
             os.environ["PATH"] = ";".join(
                 list(OrderedDict.fromkeys([tbb_path] + os.environ.get("PATH", "").split(";")))
             )
+        elif PLATFORM == "unix":
+            tbb_path = str(_model_dir_path)
+            old = os.environ.get("LD_LIBRARY_PATH")
+            if old:
+                os.environ["LD_LIBRARY_PATH"] = old + ":" + tbb_path
+            else:
+                os.environ["LD_LIBRARY_PATH"] = tbb_path
 
     def load_model(self):
         import cmdstanpy
         self._add_tbb_to_path()
-        model_file = pkg_resources.resource_filename(
-            'prophet',
-            'stan_model/prophet_model.bin',
-        )
+        model_file = str(_model_dir_path.joinpath("prophet_model.bin"))
         return cmdstanpy.CmdStanModel(exe_file=model_file)
 
     def fit(self, stan_init, stan_data, **kwargs):
