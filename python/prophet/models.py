@@ -69,6 +69,34 @@ class CmdStanPyBackend(IStanBackend):
         #     pkg_resources.resource_filename("prophet", f"stan_model/cmdstan-{self.CMDSTAN_VERSION}")
         # )
 
+    def download_model_files(self):
+        if (platform.system(), platform.machine()) != ("Linux", "x86_64"):
+            logger.warning("only Linux x86_64 binary can be downloaded")
+            logger.warning("please prepare compiled stan model binary by yourself")
+            return
+
+        import requests
+        import shutil
+
+
+        if not _model_dir_path.exists():
+            _model_dir_path.mkdir()
+
+        targets = {
+            "libtbb.so.2": "https://github.com/lucidfrontier45/prophet/releases/download/1.0.1-alpha/libtbb.so.2",
+            "prophet_model.bin": "https://github.com/lucidfrontier45/prophet/releases/download/1.0.1-alpha/prophet_model.bin"
+        }
+
+        for file_name, url in targets.items():
+            target_path = _model_dir_path.joinpath(file_name)
+            if not target_path.exists():
+                logger.info(f"downloading {file_name}")
+                with requests.get(url, stream=True) as r:
+                    with target_path.open("wb") as f:
+                        shutil.copyfileobj(r.raw, f)
+                        target_path.chmod(0o755)
+            
+
     @staticmethod
     def get_type():
         return StanBackendEnum.CMDSTANPY.name
@@ -92,6 +120,7 @@ class CmdStanPyBackend(IStanBackend):
                 os.environ["LD_LIBRARY_PATH"] = tbb_path
 
     def load_model(self):
+        self.download_model_files()
         import cmdstanpy
         self._add_tbb_to_path()
         model_file = str(_model_dir_path.joinpath("prophet_model.bin"))
