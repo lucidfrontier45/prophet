@@ -60,6 +60,7 @@ class IStanBackend(ABC):
 
 _model_dir_path = Path(os.environ.get("PROPHET_MODEL_DIR_PATH", default=Path.home().joinpath(".prophet")))
 
+
 class CmdStanPyBackend(IStanBackend):
     CMDSTAN_VERSION = "2.26.1"
     def __init__(self):
@@ -78,7 +79,6 @@ class CmdStanPyBackend(IStanBackend):
         import requests
         import shutil
 
-
         if not _model_dir_path.exists():
             _model_dir_path.mkdir()
 
@@ -95,7 +95,6 @@ class CmdStanPyBackend(IStanBackend):
                     with target_path.open("wb") as f:
                         shutil.copyfileobj(r.raw, f)
                         target_path.chmod(0o755)
-            
 
     @staticmethod
     def get_type():
