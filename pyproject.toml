@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "prophet"
-version = "1.0.0"
+name = "prophet-nogpl"
+version = "1.0.0-rc1"
 description = ""
 authors = ["Du Shiqiao <lucidfrontier.45@gmail.com>"]
 packages = [

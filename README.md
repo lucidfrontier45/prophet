@@ -1,6 +1,6 @@
-# Prophet: Automatic Forecasting Procedure
+# Prophet-NoGPL: Automatic Forecasting Procedure without GPL Dependency
 
-This is a fork of the Prophet. Its aim is to completely exclude PyStan2 dependency which is GPL.
+This is a fork of the Prophet. Its aim is to completely remove PyStan2 dependency which is licensed under GPL.
 
 ## How it works?
 
@@ -17,7 +17,7 @@ $HOME/
 
 Then make sure there is a `stanc` executable in the `bin` directory. If there is only something like `linux-stanc`, `mac-stanc` etc, rename it to `stanc` and append exec permission.
 
-Below is the original Readme content.
+Below is the original Readme content. Some of them can be inconsistent to this package.
 
 
 ![Build](https://github.com/facebook/prophet/workflows/Build/badge.svg)
