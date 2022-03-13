@@ -83,8 +83,8 @@ class CmdStanPyBackend(IStanBackend):
             _model_dir_path.mkdir()
 
         targets = {
-            "libtbb.so.2": "https://github.com/lucidfrontier45/prophet-nogpl/releases/download/1.0.0-rc1/libtbb.so.2",
-            "prophet_model.bin": "https://github.com/lucidfrontier45/prophet-nogpl/releases/download/1.0.0-rc1/prophet_model.bin"
+            "libtbb.so.2": "https://github.com/lucidfrontier45/prophet-nogpl/releases/download/1.0.0/libtbb.so.2",
+            "prophet_model.bin": "https://github.com/lucidfrontier45/prophet-nogpl/releases/download/1.0.0/prophet_model.bin"
         }
 
         for file_name, url in targets.items():

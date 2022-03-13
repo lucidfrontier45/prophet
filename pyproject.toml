@@ -1,11 +1,20 @@
 [tool.poetry]
 name = "prophet-nogpl"
-version = "1.0.0-rc1"
+version = "1.0.0"
 description = ""
 authors = ["Du Shiqiao <lucidfrontier.45@gmail.com>"]
 packages = [
     { include = "prophet/*.py", from = "python"},
     { include = "prophet/tests", from = "python", format = "sdist" }
+]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/lucidfrontier45/prophet-nogpl"
+classifiers = [
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10"
 ]
 
 [tool.poetry.dependencies]
