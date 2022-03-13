@@ -1,5 +1,25 @@
 # Prophet: Automatic Forecasting Procedure
 
+This is a fork of the Prophet. Its aim is to completely exclude PyStan2 dependency which is GPL.
+
+## How it works?
+
+PyStan2 is completely removed from the dependency and CmdStanPy is used instead. The preuilt stan model binary and dependenty shared library files are downloaded to the local directory at the first run. The direcory is set to `$HOME/.prophet/` by default and can be configured by the `PROPHET_MODEL_DIR_PATH` env var.  (see `CmdStanPyBackend` class in the `models.py`)
+
+Currently, only linux x86_64 binary is prebuilt and downloaded. If you are using other platform, you need to compile the model file and dependent shared library (`libtbb.so.2`) by `comple_cmdstanpy_model.py`  and move them to the `PROPHET_MODEL_DIR_PATH`. To compile the model, you need to install CmdStan, CmdStanPy and C++ compiler. The prebuilt CmdStan can be downloaded from https://github.com/stan-dev/cmdstan/releases. After downloading one that is compatible to your system, untar and put it under `$HOME/.cmdstan`. The directory structure should be like this.
+
+```
+$HOME/
+    .cmdstan/
+        cmdstan-<version>/
+            bin/    
+```
+
+Then make sure there is a `stanc` executable in the `bin` directory. If there is only something like `linux-stanc`, `mac-stanc` etc, rename it to `stanc` and append exec permission.
+
+Below is the original Readme content.
+
+
 ![Build](https://github.com/facebook/prophet/workflows/Build/badge.svg)
 [![Pypi_Version](https://img.shields.io/pypi/v/prophet.svg)](https://pypi.python.org/pypi/prophet)
 [![Conda_Version](https://anaconda.org/conda-forge/prophet/badges/version.svg)](https://anaconda.org/conda-forge/prophet/)
